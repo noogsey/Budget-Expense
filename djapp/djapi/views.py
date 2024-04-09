@@ -1,16 +1,26 @@
 from django.shortcuts import render
-from rest_framework import generics
+from rest_framework import generics, status,permissions
+from knox.models import AuthToken
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Expense, Budget
-from .serializers import ExpenseSerializer, BudgetSerializer
+from .serializers import ExpenseSerializer, BudgetSerializer, UserRegistrationSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 
 
 
 
-# Create your views here.
+# Create your views here
+
+class UserRegistrationView(APIView):
+    def post(self, request):
+        serializer = UserRegistrationSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({'message': 'User registration successful!'}, status=status.HTTP_201_CREATED)
+    
+   
 @permission_classes([IsAuthenticated])
 class ExpenseListCreateView(generics.ListCreateAPIView):
     queryset = Expense.objects.all()

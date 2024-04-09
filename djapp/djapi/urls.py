@@ -1,13 +1,14 @@
 from django.contrib import admin
 from django.urls import path
 from djapi import views
-from .views import ExpenseListCreateView, ExpenseRetrieveUpdateDestroyView, BudgetListCreateView, BudgetRetrieveUpdateDestroyView
+from .views import ExpenseListCreateView, ExpenseRetrieveUpdateDestroyView, BudgetListCreateView, BudgetRetrieveUpdateDestroyView,UserRegistrationView
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('register/', UserRegistrationView.as_view(), name='user-registration'),
     path('expenses/', ExpenseListCreateView.as_view(), name='expense-list-create'),
     path('expenses/<int:pk>/', ExpenseRetrieveUpdateDestroyView.as_view(), name='expense-retrieve-update-destroy'),
     path('budgets/', BudgetListCreateView.as_view(), name='budget-list-create'),
